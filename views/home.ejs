@@ -1,0 +1,76 @@
+<%-include("partials/header")%>
+<body>
+<div class="container" id="main">
+    <% if (title !== "read-more") { %>
+        <h1><%= title %></h1>
+    <% } %>
+
+    <% if (title !== "Compose" && title !== "read-more") { %>
+        <p><%= content %></p>
+    <% } %>
+
+    <% if (title === "Home" && posts.length > 1) { %>
+        <% posts.forEach((post) => { %>
+            <ol class="list-group list-group">
+                <li class="list-group-item">
+                   <div class="d-flex">
+                       <h1 class="col-11"><%= post.postTitle %></h1>
+                       <input class="mt-4" type="checkbox">
+                   </div>
+
+                    <div id="postWrapper" class="py-0 px-0">
+                        <p id="postResult"><%= post.body %><span>...</span></p>
+                        <form action="/read-more" method="post">
+                            <input type="hidden" name="postId" id="postId" value="<%= post.id %>">
+                            <button onclick="this.form.submit()" id="readMoreBtn">Read more</button>
+                        </form>
+                    </div>
+                </li>
+            </ol>
+        <% }); %>
+    <% } %>
+
+    <div class="d-grid gap-2">
+        <% if (title === "Home") { %>
+            <form method="post" action="/">
+                <button class="btn btn-primary float-end mt-2" type="submit" name="compose" value="compose" onclick="this.form.submit()">Compose</button>
+            </form>
+        <% } %>
+    </div>
+
+    <% if (title === "Compose") { %>
+        <form method="post" action="/compose">
+            <div class="bd-example mt border-0">
+                <div class="mb-3">
+                    <label for="title" class="form-label"><strong>Title</strong></label>
+                    <input type="text" name="title" class="form-control" id="title">
+                </div>
+                <div class="mb-3">
+                    <label for="post" class="form-label"><strong>Post</strong></label>
+                    <textarea class="form-control" name="post" id="post" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label"><strong>Submitter</strong></label>
+                    <input type="text" name="name" class="form-control" id="name">
+                </div>
+                <div>
+                    <input type="submit" name="publish" id="publish_btn">
+                </div>
+            </div>
+        </form>
+    <% } %>
+
+    <% if (title === "read-more") { %>
+        <div class="container">
+            <article class="blog-post">
+                <h2 class="display-5 link-body-emphasis mb-1"><%= post.postTitle %></h2>
+                <p class="mt-3"><%= post.body %></p>
+                <p class="blog-post-meta" id="postDate"><%= post.date %> by <b><%= post.name %></b></p>
+            </article>
+        </div>
+    <% } %>
+</div>
+</body>
+
+<%- include("partials/footer")%>
+</html>
