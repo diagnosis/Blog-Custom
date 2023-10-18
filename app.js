@@ -10,6 +10,10 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const HOME_CONTENT = "Welcome to Daily Journal Blog, where daily reflection meets personal growth. Discover the transformative power of journaling with our inspiring prompts, expert tips, and a supportive community. Start your journey to self-discovery today!";
+
+const ABOUT_US_CONTENT = "Welcome to Daily Journal, your trusted companion in the quest for self-discovery and personal growth. Based in the heart of Seattle, we're passionate about harnessing the city's dynamic energy, natural beauty, and innovation to inspire your daily reflections.";
+
 (async () => {
     try {
         await mongoose.connect('mongodb+srv://demirkansafa:g8p79P78lH4CSrK3@cluster0.kb3rqz6.mongodb.net/postDB');
@@ -30,14 +34,14 @@ const Post = mongoose.model("post", postSchema);
 app.get("/", async (req, res) => {
     try {
         const posts = await Post.find();
-        res.render("home", { title: "Home", content: "content", posts: posts });
+        res.render("home", { title: "Home", content: HOME_CONTENT, posts: posts });
     } catch (err) {
         console.log(err);
     }
 });
 
 app.get("/About_us", (req, res) => {
-    res.render("home", { title: "About Us", content: "about us" });
+    res.render("home", { title: "About Us:Daily Journal - Discover, Reflect, Grow", content: ABOUT_US_CONTENT });
 });
 
 app.get("/Contact_us", (req, res) => {
@@ -93,6 +97,14 @@ app.post("/compose", async (req, res) => {
     } catch (err) {
         console.log(err);
     }
+});
+
+app.post("/delete", async (req, res)=>{
+ let postId = req.body.postId;
+ if(postId){
+     await Post.findByIdAndRemove(postId);
+ }
+ res.redirect("/");
 });
 
 app.listen(PORT, () => {

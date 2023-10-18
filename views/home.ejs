@@ -5,17 +5,22 @@
         <h1><%= title %></h1>
     <% } %>
 
-    <% if (title !== "Compose" && title !== "read-more") { %>
+    <% if (title !== "Compose" && title !== "read-more" && title !== "Contact Us") { %>
         <p><%= content %></p>
     <% } %>
 
-    <% if (title === "Home" && posts.length > 1) { %>
+    <% if (title === "Home" && posts.length > 0) { %>
         <% posts.forEach((post) => { %>
             <ol class="list-group list-group">
                 <li class="list-group-item">
                    <div class="d-flex">
-                       <h1 class="col-11"><%= post.postTitle %></h1>
-                       <input class="mt-4" type="checkbox">
+                       <h3 class="col-10"><%= post.postTitle %></h3>
+                       <div class="mt-2 form-check form-switch d-md-table-cell">
+                           <form method="post" action="/delete">
+                                <input class="form-check-input" name="postId" type="checkbox" role="switch" id="postId" value="<%=post.id%>" onclick="this.form.submit()">
+                           </form>
+                           <label class="form-check-label" for="deletePost" style="color:#B90A38">Delete</label>
+                       </div>
                    </div>
 
                     <div id="postWrapper" class="py-0 px-0">
@@ -30,10 +35,10 @@
         <% }); %>
     <% } %>
 
-    <div class="d-grid gap-2">
+    <div class="d-grid">
         <% if (title === "Home") { %>
             <form method="post" action="/">
-                <button class="btn btn-primary float-end mt-2" type="submit" name="compose" value="compose" onclick="this.form.submit()">Compose</button>
+                <button class="btn btn-primary float-start mt-2 col-2" type="submit" name="compose" value="compose" onclick="this.form.submit()">Compose</button>
             </form>
         <% } %>
     </div>
@@ -59,6 +64,19 @@
             </div>
         </form>
     <% } %>
+        <%if(title === "Contact Us"){%>
+        <div class="container">
+            <section>
+                <h2>Contact Information</h2>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:s.impunity@code.rs">s.impunity@code.rs</a></li>
+                    <li><strong>Address:</strong> Renton, WA, 98057</li>
+                    <li><strong>Phone:</strong> <a href="tel:+15553450101">+1 (555) 345-0101</a></li>
+                    <li><strong>Website:</strong> <a href="https://impunity.code" target="_blank">impunity.code</a></li>
+                </ul>
+            </section>
+        </div>
+        <%}%>
 
     <% if (title === "read-more") { %>
         <div class="container">
